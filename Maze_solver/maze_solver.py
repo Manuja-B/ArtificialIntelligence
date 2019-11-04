@@ -46,13 +46,13 @@ def find_direction(curr_move, next_move):
 
 
 # Perform search on the map
-def search1(IUB_map,status_map):
+def search1(maze_map,status_map):
 
 	# Find my start position
-	you_loc=[(row_i,col_i) for col_i in range(len(IUB_map[0])) for row_i in range(len(IUB_map)) if IUB_map[row_i][col_i]=="#"][0]
+	you_loc=[(row_i,col_i) for col_i in range(len(maze_map[0])) for row_i in range(len(maze_map)) if maze_map[row_i][col_i]=="#"][0]
 	
 	# Find the goal position
-	goal_loc=[(row_i,col_i) for col_i in range(len(IUB_map[0])) for row_i in range(len(IUB_map)) if IUB_map[row_i][col_i]=="@"][0]
+	goal_loc=[(row_i,col_i) for col_i in range(len(maze_map[0])) for row_i in range(len(maze_map)) if maze_map[row_i][col_i]=="@"][0]
 
 	goal_dist = abs(you_loc[0] - goal_loc[0]) + abs(you_loc[1] - goal_loc[1])
 
@@ -75,16 +75,16 @@ def search1(IUB_map,status_map):
 		((curr_move), curr_dist, curr_man, curr_dir)=fringe.pop(min_idx)
 
 		# finding new moves in neighborhood
-		for move in moves(IUB_map, *curr_move):
+		for move in moves(maze_map, *curr_move):
 
 			# neighbor is target
-			if IUB_map[move[0]][move[1]]=="@":
+			if maze_map[move[0]][move[1]]=="@":
 				direction = find_direction(curr_move,move)
 				return curr_dist+1,curr_dir+direction
 			else:
 				h = heuristic(move,goal_loc)
 				
-				if IUB_map[move[0]][move[1]] == '.':
+				if maze_map[move[0]][move[1]] == '.':
 
 					# Checking if the given state is visited or new
 					if status_map[move[0]][move[1]] == 0:
@@ -102,21 +102,21 @@ def search1(IUB_map,status_map):
 									fringe[i] = (fringe[i][0],curr_dist,curr_man,curr_dir)
 								break
 	# If no path found
-	return IUB_map,"Inf"
+	return maze_map,"Inf"
 
 
 # Main Function
 if __name__ == "__main__":
-	IUB_map=parse_map(sys.argv[1])
+	maze_map=parse_map(sys.argv[1])
 	
 	print("Shhhh... quiet while I navigate!")
 
 	# Conversion to a map that can be run on sice servers
-	IUB = [[IUB_map[i][j] for j in range(len(IUB_map[0])-1)] for i in range(len(IUB_map))]
-	# Here -1 just to be able to make it run on sice servers
-	status_map = [[0 for j in range(len(IUB_map[0])-1)] for i in range(len(IUB_map))]
+	maze = [[maze_map[i][j] for j in range(len(maze_map[0])-1)] for i in range(len(maze_map))]
+	
+	status_map = [[0 for j in range(len(maze_map[0])-1)] for i in range(len(maze_map))]
 
-	solution, direction = search1(IUB,status_map)
+	solution, direction = search1(maze,status_map)
 	
 	print("Here's the solution I found:")
 	if direction == "Inf":
