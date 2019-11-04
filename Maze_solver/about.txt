@@ -1,0 +1,1 @@
+This program is built to solve a maze using A* algorithm. The program takes input a map, and outputs the path and path length.
