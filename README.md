@@ -1,1 +1,3 @@
 # ArtificialIntelligence
+
+This repo collects my work on AI related games. More on this coming...
